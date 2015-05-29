@@ -12,7 +12,7 @@ $isCreation = $model->isNewRecord;
 
 if (!$isCreation) {
     $fileControlId = 'fileControl';
-    $this->render('_fileControlScript', ['fileControlId' => $fileControlId]);;
+    $this->render('_fileControlScript', ['fileControlId' => $fileControlId]);
 } 
 
 $categoriesListSize = min(count($categories), 10);
@@ -36,16 +36,18 @@ $categoriesListSize = min(count($categories), 10);
         <?= $form->field($model, 'imageFile')->fileInput() ?>
     <?php else : ?>
         <div id="<?=$fileControlId?>" class="fileControl -marginBottom20">
-            <?= $form->field($model, 'image')->textInput(['readonly' => 'readonly', 'class' => 'fileControl__fileName']) ?>
-            <?= Html::activeFileInput($model, 'imageFile', ['class' => 'fileControl__file']) ?>
-            <?= Html::button('Удалить', ['class' => 'fileControl__deleteButton']); ?> 
-            <?= Html::activeHiddenInput($model, 'isImageChanged', ['class' => 'fileControl__isChanged']) ?>
+            <?= $form->field($model, 'imageFile')->fileInput(['class' => 'fileControl__file']) ?>
+            <?= Html::input('text', 'imageFilename', $model->imageFilename, ['readonly' => 'readonly', 'class' => 'fileControl__fileName']) ?>
+            <div class="-marginTop10">
+                <?= Html::button('Удалить', ['class' => 'fileControl__deleteButton']); ?> 
+            </div>
         </div>
     <?php endif; ?>
     
     <?= $form->field($model, 'categories')->listBox($categories, [
         'multiple' => 'multiple',
-        'size' => $categoriesListSize
+        'size' => $categoriesListSize,
+        'autocomplete' => 'off'
     ]) ?>
     
     <?= $form->field($model, 'active')->checkbox() ?>

@@ -10,14 +10,12 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use yii\web\UploadedFile;
 use app\services\news\NewsService;
 
-/**
- * NewsController implements the CRUD actions for News model.
- */
 class NewsController extends Controller
 {
+    public $layout = 'admin';
+        
     public function behaviors()
     {
         return [
@@ -30,10 +28,6 @@ class NewsController extends Controller
         ];
     }
 
-    /**
-     * Lists all News models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $searchModel = new NewsSearch();
@@ -46,11 +40,6 @@ class NewsController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single News model.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -59,77 +48,60 @@ class NewsController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new News model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
-        $model = new News();
-        if ($model->load(Yii::$app->request->post() && $model->save() ) ) {
-            
-            Yii::error(print_r(Yii::$app->request->post(), true) );
-            
-            return $this->redirect(['view', 'id' => $model->id]);
+        $newsData = Yii::$app->request->post('News', null);
+        if ($newsData !== null) {
+            $categories = is_array($newsData['categories']) ? $newsData['categories'] : null;
+            $newsService = new NewsService();
+            $result = $newsService->create($newsData, $categories);
+            $model = $result->model;
+            if ($result->isSuccess) {
+                return $this->redirect(['view', 'id' => $model->id]); 
+            }
         } else {
-            return $this->render(
-                'create', 
-                [
-                    'model' => $model,
-                    'categories' => $this->getAllCategoriesForUsingInSelect()
-                ]
-            );
+            $model = new News();
         }
+        
+        return $this->render('create', [
+            'model' => $model,
+            'categories' => $this->getAllCategoriesForUsingInSelect()
+        ]);
     }
 
-    /**
-     * Updates an existing News model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render(
-                'update', 
-                [
-                    'model' => $model,
-                    'categories' => $this->getAllCategoriesForUsingInSelect()
-                ]
-            );
-        }
+        $newsData = Yii::$app->request->post('News', null);
+        if ($newsData !== null) {
+            $imageFilename = Yii::$app->request->post('imageFilename', '');
+            $needDeleteOldImageIfExist = $imageFilename === '';
+            $categories = is_array($newsData['categories']) ? $newsData['categories'] : null;
+            $newsService = new NewsService();
+            $result = $newsService->update($model, $newsData, $needDeleteOldImageIfExist, $categories);
+            if ($result->isSuccess) {
+                return $this->redirect(['view', 'id' => $model->id]); 
+            }
+        } 
+        
+        return $this->render('update', [
+                'model' => $model,
+                'categories' => $this->getAllCategoriesForUsingInSelect()
+        ]);
     }
 
-    /**
-     * Deletes an existing News model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        $newsService = new NewsService();
+        $newsService->delete($model);
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the News model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return News the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
-        $model = News::find($id)->with('category')->one();
-        
+        $newsService = new NewsService();
+        $model = $newsService->getWithCategoryListById($id);
         if ($model !== null) {
             return $model;
         } else {

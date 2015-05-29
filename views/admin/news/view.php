@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\utils\formatters\NewsFormatter;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\News */
@@ -27,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= DetailView::widget([
         'model' => $model,
+        'formatter' => new NewsFormatter(),
         'attributes' => [
             'title',
             'description',
@@ -35,13 +37,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'createdAt',
                 'format' => ['datetime', 'dd-MM-Y H:i:s'],
             ],
+
             [
-                //'attribute' => 'category.title',
-                'label' => 'Категория',
-                'value' => $model->category->title
+                'label' => 'Категории',
+                'format' => 'categories',
+                'value' => $model->categories
             ],
-            'image',
-             'text:ntext',
+            
+            [
+                'label' => 'Изображение',
+                'attribute' => 'imageUrl',
+                'format' => 'imageUrl'
+            ],
+
+            'text:ntext',
         ],
     ]) ?>
 

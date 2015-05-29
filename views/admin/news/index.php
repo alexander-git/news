@@ -7,19 +7,21 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\search\NewsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Новости';
+$this->title = 'Управление новостями';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?= $this->render(
+    <?php /*= 
+        
+        $this->render(
         '_search', 
         [
             'model' => $searchModel,
             'categories' => $categories
-        ] 
-    ) ?>
+        ]   
+    ) */?>
 
     <p>
         <?= Html::a('Создать новость', ['create'], ['class' => 'btn btn-success']) ?>

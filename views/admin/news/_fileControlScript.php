@@ -6,7 +6,7 @@ $fileControlId = 'fileControl';
 $this->registerJs(
     "
         $(document).ready(function() {
-            var FileControl = new FileControl('$fileControlId');
+            var fileControl = new FileControl('$fileControlId');
         });
     ",
     \yii\web\View::POS_HEAD,

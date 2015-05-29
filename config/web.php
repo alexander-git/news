@@ -7,10 +7,9 @@ $config = [
     'id' => 'app',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'defaultRoute' => 'main/index',
     'aliases' => [
-        //'@images' => dirname(__DIR__).'/web/images',
         //'@imagesNews' => dirname(__DIR__).'/web/images/news',
-        
         '@imagesNews' => '@app/web/images/news',
         '@imagesNewsUrl' => '/images/news'
     ],
@@ -25,7 +24,7 @@ $config = [
             //'enablePrettyUrl' => true,
             //'showScriptName' => true,
             'rules' => [
-                //'/' => 'site/index',    
+                '/' => 'main/index',    
             ],
         ],
         
@@ -38,13 +37,6 @@ $config = [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
-        ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

@@ -11,6 +11,7 @@ class CommonCssAsset extends AssetBundle
     
     public $css = [
         'control.css',
+        'decoration.css'
     ];
 
 }

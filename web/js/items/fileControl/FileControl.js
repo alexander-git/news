@@ -19,18 +19,16 @@ var FileControl = function(ID) {
             _initialFileName = $(Sel.FILE_NAME).val(); // Запомним имя файла, которое было изначально.
         }
         updateView();
-        updateChangedHiddenField();
     }
     
     $(Sel.DELETE_BUTTON).click(function(e) { 
         determineState();
         if (_state === FILE_SELECTED_STATE) {
-            _state === FILE_NOT_SELECTED_STATE;
+            _state = FILE_NOT_SELECTED_STATE;
         } else if (_state === FILE_UPLOADED_STATE) {
-            _state === FILE_NOT_SELECTED_STATE;
+            _state = FILE_NOT_SELECTED_STATE;
         }
         updateView();
-        updateChangedHiddenField();
     });  
     
     function determineState() {
@@ -61,22 +59,4 @@ var FileControl = function(ID) {
         }
     }
     
-    function updateChangedHiddenField() {
-        if (_state === FILE_NOT_SELECTED_STATE) {
-            if (_isFileExist) {
-                $(Sel.IS_CHANGED).val(1);
-            } else {
-                $(Sel.IS_CHANGED).val(0);
-            }
-        } else if (_state === FILE_SELECTED_STATE) {
-            $(Sel.IS_CHANGED).val(1);
-        } else if (_state === FILE_UPLOADED_STATE) {
-            if (_isFileExist) {
-                $(Sel.IS_CHANGED).val(0);
-            } else {
-                $(Sel.IS_CHANGED).val(1);
-            }
-        }
-    }
-       
 };

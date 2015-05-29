@@ -5,14 +5,12 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\assets\CommonCssAsset;
-use app\assets\MainAsset;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
 AppAsset::register($this);
 CommonCssAsset::register($this);
-MainAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -38,12 +36,17 @@ MainAsset::register($this);
                 'options' => ['class' => 'navbar-nav navbar-left'],
                 'items' => [
                     ['label' => 'Главная', 'url' => ['/main/index']],
-                    ['label' => 'Панель управления', 'url' => ['/admin/news/index']],
+                    ['label' => 'Новости', 'url' => ['/admin/news/index']],
+                    ['label' => 'Категории', 'url' => ['/admin/category/index']],
                 ],
             ]);
             NavBar::end();
         ?>
-        <div class="container-fluid">
+        <div class="container">
+            <?= Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                'homeLink' => false
+            ]) ?>
             <?= $content ?>
         </div>
     </div>

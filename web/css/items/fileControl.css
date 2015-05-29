@@ -18,9 +18,3 @@
 .fileControl .fileControl__deleteButton {
     
 }
-
-/* Задаётся для input с type="hidden".  */
-.fileControl .fileControl__isChanged {
-    visibility : hidden;
-}
-

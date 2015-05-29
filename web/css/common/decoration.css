@@ -1,0 +1,75 @@
+.-roundedCorners10 { 
+    border-radius: 10px 10px 10px 10px; 
+    border-bottom : none;
+}
+
+.-roundedCorners5 {
+    border-radius: 5px 5px 5px 5px; 
+}
+
+
+.-paleYellow {
+	background-color : #ffde92;
+	color : #000;
+}
+
+.-yellow {
+	background-color : #ffd66d;
+	color : #000;
+}
+
+.-deepYellow {
+	background-color : #ffc837;
+	color : #000;
+}
+
+.-darkRed {
+	background-color : #c63c24;
+	color : #fff;
+}
+
+.-red {
+	background-color : #e34629;
+	color : #fff;
+}
+
+
+.-red {
+    background-color : #d33619;
+    color : #fff;
+}
+
+.-paleRed {
+	background-color : #F3A679;
+	color : #fff;
+}
+
+.-darkGreen {
+	background-color : #00756f;
+	color : #fff;
+}
+
+.-green {
+	background-color : #008f88;
+	color : #fff;
+}
+
+.-paleGreen {
+	background-color : #8eccc1;
+	color : #fff;
+}
+
+.-paleBlue {
+	background-color : #dce5f3;
+	color : #fff;
+}
+
+.-blue {
+	background-color : #799fcf;
+	color : #fff;
+}
+
+.-darkBlue {
+	background-color : #2c5c99;
+	color : #fff;
+}

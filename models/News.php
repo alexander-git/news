@@ -23,7 +23,6 @@ use yii\behaviors\TimestampBehavior;
 use app\models\Category;
 use app\models\CategoryNews;
 use yii\web\UploadedFile;
-use Yii;
 
 class News extends \yii\db\ActiveRecord
 {
@@ -79,18 +78,20 @@ class News extends \yii\db\ActiveRecord
                 'message' => 'Недопустимое значение'
             ], //TODO#
             
-            [['createdAt'], 'required'],
             [['createdAt'], 'integer'],
 
+            /*
             [['hasImage'], 'required'],
+           
             [
                 ['hasImage'], 
                 'boolean', 
                 'strict' => true, 
                 'message' => 'Недопустимое значение'
             ], //TODO#
+            */
             
-            [['imageExtension'], 'required'],
+            //[['imageExtension'], 'required'],
             [
                 ['imageExtension'],
                 'string', 
@@ -115,7 +116,7 @@ class News extends \yii\db\ActiveRecord
             'hasImage' => 'Изображение',
             'imageExtension' => 'Расширение изображения',
             'imageFile' => 'Файл изображения',
-            'imageFilename' => 'Имя файла изображения',
+            'imageFilename' => 'Файл изображения',
             'categories' => 'Категории',
         ];
     }
@@ -153,16 +154,19 @@ class News extends \yii\db\ActiveRecord
         return Yii::getAlias('@imagesNewsUrl').'/'.$this->imageFileName;
     }
     
-    protected function beforeSave() {
+    public function beforeSave($insert) {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+       
         $file = UploadedFile::getInstance($this, 'imageFile');
         $needUploadImageFile = $file !== null;
-        
-        if ($this->isNewRecord)
+        if ($insert)
         {
             $this->oldImageFilename = null;
             if ($needUploadImageFile) {
                 $this->hasImage = true;
-                $this->imageExtension = $this->imageFile->extension;
+                $this->imageExtension = $file->extension;
             } else {
                 $this->hasImage = false;
                 $this->imageExtension = '';
@@ -173,7 +177,7 @@ class News extends \yii\db\ActiveRecord
                 // есть, нужно удалить.
                 $this->oldImageFilename = self::getImageFilenameForModel($this);
                 $this->hasImage = true;
-                $this->imageExtension = $this->imageFile->extension;
+                $this->imageExtension = $file->extension;
             } else {
                 if (!$this->hasImage) { 
                     // Новый файл не загружен. А существующий файл, если он 
@@ -187,11 +191,13 @@ class News extends \yii\db\ActiveRecord
                 }
             }
         }
-        
-        return true;
+
+        return true;  
     }
     
-    protected function afterSave() {
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        
         // Если нужно, удалим старый файл.
         if ($this->oldImageFilename !== null) { 
             $oldFileFullFilename = self::getSaveImagesPath().'/'.$this->oldImageFilename;
@@ -207,6 +213,16 @@ class News extends \yii\db\ActiveRecord
         }  
     }
     
+    public function afterDelete() {
+        parent::afterDelete();
+        if ($this->hasImage) {
+            $imageFullFilename = self::getSaveImagesPath().'/'.$this->imageFilename;
+            if (file_exists($imageFullFilename) ) {
+                unlink($imageFullFilename);
+            }   
+        }
+    }
+       
     public function deleteCategories() {
         CategoryNews::deleteAll(['idNews' => $this->id]);
     }
@@ -214,7 +230,7 @@ class News extends \yii\db\ActiveRecord
     public function addCategories($idCategories) {
         foreach ($idCategories as $idCategory) {
            $categoryNews = new CategoryNews();
-           $categoryNews->idNew = $this->id;
+           $categoryNews->idNews = $this->id;
            $categoryNews->idCategory =  $idCategory;
            if (!$categoryNews->save() ) {
                throw new \yii\base\Exception(); //TODO# Заменить.

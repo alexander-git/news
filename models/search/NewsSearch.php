@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\News;
+use app\models\CategoryNews;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -47,20 +48,37 @@ class NewsSearch extends News
         if (!$this->validate()) {
             return $dataProvider;
         }
-
+        
+        if ($this->category !== '') {
+            $db = Yii::$app->db;
+            $idNews = $db->createCommand("SELECT idNews FROM ".CategoryNews::tableName()." WHERE idCategory = :idCategory")
+                ->bindParam(':idCategory', $this->category)->queryColumn();
+        }
+        
+        /*
+        $query->innerJoinWith([
+            'categories' => function($q)  {
+                if ($this->category !== '') {
+                    $q->onCondition(['idCategory' => $this->category])
+                }
+            }
+        ]);
+        */
+        
         $query->with(['categories']);
         
+        if ($this->category !== '') {
+            $query->andFilterWhere(['id' => $idNews]);
+        }
+        
         $query->andFilterWhere([
-            'id' => $this->id,
             'active' => $this->active,
             'createdAt' => $this->createdAt,
             'hasImage' => $this->hasImage,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'text', $this->text])
-            ->andFilterWhere(['like', 'imageExtension', $this->imageExtension]);
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

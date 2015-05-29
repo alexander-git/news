@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color : #77AfA8;
+    background-color : #F3A679;
+    background-color : #F3A649;
+}
+
+
+.content {
+    
+}
+
+.content__left {
+    float : left;
+    width : 70%;
+}
+
+.content__right {
+    margin-left : 70%;
+}
