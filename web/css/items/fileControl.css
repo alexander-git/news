@@ -1,0 +1,26 @@
+.fileControl {
+    
+}
+
+/*  Задаётся для текстового input с атрибутом readonly. 
+    При создании html в value этого поля нужно записать имя файла,
+    если он существует. 
+*/
+.fileControl .fileControl__fileName {
+    
+}
+
+/* Задаётся для input с type="file". */
+.fileControl .fileControl__file {
+    
+}
+
+.fileControl .fileControl__deleteButton {
+    
+}
+
+/* Задаётся для input с type="hidden".  */
+.fileControl .fileControl__isChanged {
+    visibility : hidden;
+}
+
