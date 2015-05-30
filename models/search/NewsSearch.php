@@ -9,18 +9,15 @@ use app\models\News;
 use app\models\CategoryNews;
 use yii\helpers\ArrayHelper;
 
-/**
- * NewsSearch represents the model behind the search form about `\app\models\News`.
- */
 class NewsSearch extends News
 {
-    public $category = null;
+    public $category = '';
     
     public function rules()
     {
         return [
-            [['id', 'active', 'createdAt', 'hasImage'], 'integer'],
-            [['title', 'description', 'text', 'imageExtension', 'category'], 'safe'],
+            [['id', 'active', 'createdAt', 'hasImage', 'category'], 'integer'],
+            [['title', 'description', 'text', 'imageExtension'], 'safe'],
         ];
     }
     
@@ -28,8 +25,7 @@ class NewsSearch extends News
     {
         return ArrayHelper::merge(['category' => 'Категория'], parent::attributeLabels() );
     }
-    
-
+   
     public function scenarios()
     {
         return Model::scenarios();
@@ -42,7 +38,8 @@ class NewsSearch extends News
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
+        $query->with(['categories']);
+        
         $this->load($params);
 
         if (!$this->validate()) {
@@ -50,30 +47,19 @@ class NewsSearch extends News
         }
         
         if ($this->category !== '') {
+            // Нужно для того, чтобы при фильтрациии по принадлежности новостей
+            // к определённой категории отобразить у найденных новостей все 
+            // категории, а не только искомую.
+            // На главной странице категории к которым относится новость 
+            // не отображаются, поэтому там используется более простой способ.
             $db = Yii::$app->db;
             $idNews = $db->createCommand("SELECT idNews FROM ".CategoryNews::tableName()." WHERE idCategory = :idCategory")
                 ->bindParam(':idCategory', $this->category)->queryColumn();
-        }
-        
-        /*
-        $query->innerJoinWith([
-            'categories' => function($q)  {
-                if ($this->category !== '') {
-                    $q->onCondition(['idCategory' => $this->category])
-                }
-            }
-        ]);
-        */
-        
-        $query->with(['categories']);
-        
-        if ($this->category !== '') {
-            $query->andFilterWhere(['id' => $idNews]);
+            $query->andWhere(['id' => $idNews]);
         }
         
         $query->andFilterWhere([
             'active' => $this->active,
-            'createdAt' => $this->createdAt,
             'hasImage' => $this->hasImage,
         ]);
 

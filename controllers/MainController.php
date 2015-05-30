@@ -5,13 +5,12 @@ namespace app\controllers;
 use Yii;
 use app\models\News;
 use app\models\search\NewsPageSearch;
+use app\services\category\CategoryService;
+use app\constants\Messages;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * MainController implements the CRUD actions for News model.
- */
 class MainController extends Controller
 {
     public function behaviors()
@@ -20,7 +19,7 @@ class MainController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
+                    
                 ],
             ],
         ];
@@ -30,17 +29,22 @@ class MainController extends Controller
     {
         $searchModel = new NewsPageSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $category = Yii::$app->request->get('category', null);
+        
+        $categoryService = new CategoryService();
+        $activeCategories = $categoryService->getByActive(true);
+        
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'newsDataProvider' => $dataProvider,
+            'categories' => $activeCategories,
+            'currentCategory' => $category
         ]);
     }
 
 
     public function actionNews($id)
     {
-        return $this->render('view', [
+        return $this->render('news', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -50,7 +54,8 @@ class MainController extends Controller
         if (($model = News::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Messages::PAGE_NOT_FOUND_404);
         }
     }
+    
 }

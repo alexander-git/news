@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'active:boolean',
             [
                 'attribute' => 'createdAt',
-                'format' => ['datetime', 'dd-MM-Y H:i:s'],
+                'format' => ['datetime', 'j-MM-Y H:i:s'],
             ],
 
             [

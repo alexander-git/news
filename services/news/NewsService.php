@@ -4,7 +4,6 @@ namespace app\services\news;
 
 use Yii;
 use app\models\News;
-use app\services\SaveResult;
 
 class NewsService {
 
@@ -20,14 +19,13 @@ class NewsService {
             ])->where([News::tableName().'.id' => $id])->one();
     }
     
-    public function create($attributes, $idCategories = null) {
-        $model = new News();
+    public function create($model, $attributes, $idCategories = null) {
         try {
             $this->save($model, $attributes, $idCategories);
-            return new SaveResult($model, true);
+            return true;
         }
         catch(Exception $e) {
-            return new SaveResult($model, false);
+            return false;
         }   
     }
     
@@ -37,10 +35,10 @@ class NewsService {
                 $model->hasImage = false;
             }
             $this->save($model, $attributes, $idCategories);
-            return new SaveResult($model, true);
+            return true;
         }
         catch(Exception $e) {
-            return new SaveResult($model, false);
+            return false;
         }
     }
     

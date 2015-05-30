@@ -5,9 +5,12 @@ namespace app\controllers\admin;
 use Yii;
 use app\models\Category;
 use app\models\search\CategorySearch;
+use app\services\category\CategoryService;
+use app\constants\Messages;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
 
 class CategoryController extends Controller
 {
@@ -24,7 +27,6 @@ class CategoryController extends Controller
             ],
         ];
     }
-
 
     public function actionIndex()
     {
@@ -48,8 +50,13 @@ class CategoryController extends Controller
     {
         $model = new Category();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $categoryData = Yii::$app->request->post('Category', null);
+        if ($categoryData !== null) {
+            $categoryService = new CategoryService();
+            $success = $categoryService->create($model, $categoryData);
+            if ($success) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -60,9 +67,13 @@ class CategoryController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $categoryData = Yii::$app->request->post('Category', null);
+        if ($categoryData !== null) {
+            $categoryService = new CategoryService();
+            $success = $categoryService->update($model, $categoryData);
+            if ($success) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -72,17 +83,21 @@ class CategoryController extends Controller
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = findModel($id);
+        $categoryService = new CategoryService();
+        $categoryService->delete($model);
 
         return $this->redirect(['index']);
     }
 
     protected function findModel($id)
     {
-        if (($model = Category::findOne($id)) !== null) {
+        $categoryService = new CategoryService();
+        $model = $categoryService->getById($id);
+        if ($model !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('Страницы не существует');
+            throw new NotFoundHttpException(Messages::PAGE_NOT_FOUND_404);
         }
     }
     

@@ -1,0 +1,24 @@
+.categoryList {
+    
+}
+
+.categoryList a.categoryListItem {
+    display : block;
+    margin : 5px;
+    padding : 10px;
+    text-decoration : none;
+}
+
+.categoryList a.categoryListItem:hover {
+    text-decoration : none;
+}
+
+.categoryListItem .categoryListItem__title {
+    font-size : 16px;
+    margin-bottom : 5px;
+}
+
+.categoryList .categoryListItem__description {
+    padding-left : 10px;
+    font-size : 14px;
+}

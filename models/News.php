@@ -26,8 +26,10 @@ use yii\web\UploadedFile;
 
 class News extends \yii\db\ActiveRecord
 {
+    CONST OUTPUT_DATE_FORMAT = 'j-m-Y H:i';
+    
     public $imageFile = null;
-    public $oldImageFilename = null;
+    protected $oldImageFilename = null; // Используется при изменении записи.
 
     public static function tableName()
     {
@@ -82,7 +84,6 @@ class News extends \yii\db\ActiveRecord
 
             /*
             [['hasImage'], 'required'],
-           
             [
                 ['hasImage'], 
                 'boolean', 
@@ -121,7 +122,7 @@ class News extends \yii\db\ActiveRecord
         ];
     }
     
-    public static function getSaveImagesPath() {
+    private static function getSaveImagesPath() {
         return Yii::getAlias('@imagesNews'); 
     }
     
@@ -152,6 +153,11 @@ class News extends \yii\db\ActiveRecord
     
     public function getImageUrl() {
         return Yii::getAlias('@imagesNewsUrl').'/'.$this->imageFileName;
+    }
+    
+    public function getDate() {
+        
+        return date(self::OUTPUT_DATE_FORMAT, $this->createdAt);        
     }
     
     public function beforeSave($insert) {

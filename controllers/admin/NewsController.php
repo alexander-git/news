@@ -6,11 +6,13 @@ use Yii;
 use app\models\News;
 use app\models\search\NewsSearch;
 use app\models\Category;
+use app\services\news\NewsService;
+use app\constants\Messages;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use app\services\news\NewsService;
+
 
 class NewsController extends Controller
 {
@@ -50,18 +52,17 @@ class NewsController extends Controller
 
     public function actionCreate()
     {
+        $model = new News();
+        
         $newsData = Yii::$app->request->post('News', null);
         if ($newsData !== null) {
             $categories = is_array($newsData['categories']) ? $newsData['categories'] : null;
             $newsService = new NewsService();
-            $result = $newsService->create($newsData, $categories);
-            $model = $result->model;
-            if ($result->isSuccess) {
+            $success = $newsService->create($model, $newsData, $categories);
+            if ($success) {
                 return $this->redirect(['view', 'id' => $model->id]); 
             }
-        } else {
-            $model = new News();
-        }
+        } 
         
         return $this->render('create', [
             'model' => $model,
@@ -78,15 +79,15 @@ class NewsController extends Controller
             $needDeleteOldImageIfExist = $imageFilename === '';
             $categories = is_array($newsData['categories']) ? $newsData['categories'] : null;
             $newsService = new NewsService();
-            $result = $newsService->update($model, $newsData, $needDeleteOldImageIfExist, $categories);
-            if ($result->isSuccess) {
+            $success = $newsService->update($model, $newsData, $needDeleteOldImageIfExist, $categories);
+            if ($success) {
                 return $this->redirect(['view', 'id' => $model->id]); 
             }
         } 
         
         return $this->render('update', [
-                'model' => $model,
-                'categories' => $this->getAllCategoriesForUsingInSelect()
+            'model' => $model,
+            'categories' => $this->getAllCategoriesForUsingInSelect()
         ]);
     }
 
@@ -105,12 +106,11 @@ class NewsController extends Controller
         if ($model !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('Страницы не существует.');
+            throw new NotFoundHttpException(Messages::PAGE_NOT_FOUND_404);
         }
     }
     
     private function getAllCategoriesForUsingInSelect() {
-        // TODO# разобрать.
         $categories = Category::find()->asArray()->select(['id', 'title'])->all();
         $categoriesListData = ArrayHelper::map($categories, 'id', 'title');
         return $categoriesListData;

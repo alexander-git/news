@@ -13,15 +13,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="news-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php /*= 
-        
-        $this->render(
-        '_search', 
-        [
-            'model' => $searchModel,
-            'categories' => $categories
-        ]   
-    ) */?>
+    <?php /* echo $this->render('_search', [
+        'model' => $searchModel,
+        'categories' => $categories
+    ]) */?>
 
     <p>
         <?= Html::a('Создать новость', ['create'], ['class' => 'btn btn-success']) ?>
@@ -41,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'createdAt',
-                'format' => ['datetime', 'dd-MM-Y H:i:s'],
+                'format' => ['datetime', 'j-MM-Y H:i:s'],
                 'filter' => false
             ],
             [

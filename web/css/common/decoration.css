@@ -1,75 +1,53 @@
-.-roundedCorners10 { 
-    border-radius: 10px 10px 10px 10px; 
-    border-bottom : none;
-}
-
 .-roundedCorners5 {
     border-radius: 5px 5px 5px 5px; 
 }
 
-
-.-paleYellow {
-	background-color : #ffde92;
-	color : #000;
+.-roundedCorners10 { 
+    border-radius: 10px 10px 10px 10px; 
 }
+
+/******************************************************************************/
 
 .-yellow {
-	background-color : #ffd66d;
-	color : #000;
+    background-color : #f5c057;
+    color : #222;
 }
 
-.-deepYellow {
-	background-color : #ffc837;
-	color : #000;
+.-lightYellow {
+    background-color : #ffd06d;
+    color : #222;
+}
+
+.-yellow a,
+.-lightYellow a {
+    color : #222;
+    font-weight : bold;
+    text-decoration : none;
+}
+
+.-yellow a:hover,
+.-lightYellow a:hover {
+    color : #556;
+    text-decoration : underline;
+}
+
+.-orange {
+    background-color : #d04900;
+    color : #eee; 
+}
+
+.-orange--action:hover {
+    background-color : #b63c20;
+    color : #fff; 
 }
 
 .-darkRed {
-	background-color : #c63c24;
-	color : #fff;
+    background-color : #b63c20;
+    color : #eee;
 }
 
-.-red {
-	background-color : #e34629;
-	color : #fff;
-}
-
-
-.-red {
-    background-color : #d33619;
-    color : #fff;
-}
-
-.-paleRed {
-	background-color : #F3A679;
-	color : #fff;
-}
-
-.-darkGreen {
-	background-color : #00756f;
-	color : #fff;
-}
-
-.-green {
-	background-color : #008f88;
-	color : #fff;
-}
-
-.-paleGreen {
-	background-color : #8eccc1;
-	color : #fff;
-}
-
-.-paleBlue {
-	background-color : #dce5f3;
-	color : #fff;
-}
-
-.-blue {
-	background-color : #799fcf;
-	color : #fff;
-}
-
-.-darkBlue {
-	background-color : #2c5c99;
-	color : #fff;
+.-darkRed--constant:hover,
+.-darkRed--constant:visited {
+    background-color : #b63c20;
+    color : #eee;
 }

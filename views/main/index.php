@@ -1,32 +1,41 @@
 <?php
 
-use yii\helpers\Html;
 use yii\widgets\ListView;
+use app\assets\NewsListAsset;
 
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\search\NewsPageSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+NewsListAsset::register($this);
 
 $this->title = 'Новости';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
     <div class="col-sm-8">
         <?= ListView::widget([
-            'dataProvider' => $dataProvider,
-            'emptyText' => '<div>Пока нет новостей</div>',
-            'itemOptions' => ['class' => 'item'],
+            'dataProvider' => $newsDataProvider,
+            'emptyText' => 'Пока нет новостей',
+            'emptyTextOptions' => [
+                'tag' => 'div',
+                'class' => 'newsList__empty -yellow'
+            ],
+            'itemOptions' => [
+                'tag' => 'div',
+                'class' => ''
+            ],
+            'options' => [
+                'class' => 'newsList'
+            ],
+            'pager' => [
+                'options' => [
+                    'class' => 'newsListPagination'
+                ]
+            ],
             'layout' => "{items}\n{pager}",
-            'itemView' => '_view'
+            'itemView' => '_newsItemView'
         ]) ?>
     </div>
     <div class="col-sm-4">
-        <?= ListView::widget([
-            'dataProvider' => $dataProvider,
-            'emptyText' => '<div>Пока нет новостей</div>',
-            'itemOptions' => ['class' => 'item'],
-            'layout' => "{items}\n{pager}",
-            'itemView' => '_viewOne'
+        <?= $this->render('_categoryList', [
+            'categories' => $categories,
+            'currentCategory' => $currentCategory
         ]) ?>
     </div>
 </div>

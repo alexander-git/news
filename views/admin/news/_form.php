@@ -26,11 +26,13 @@ $categoriesListSize = min(count($categories), 10);
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
     
+    <?php /*
     <?php if (!$isCreation) : ?>  
         <?= $form->field($model, 'createdAt')->textInput() ?>
     <?php endif; ?>
+    */ ?>
     
     <?php if($isCreation) : ?>
         <?= $form->field($model, 'imageFile')->fileInput() ?>
