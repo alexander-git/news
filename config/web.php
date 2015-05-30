@@ -24,16 +24,11 @@ $config = [
             //'enablePrettyUrl' => true,
             //'showScriptName' => true,
         ],
-        
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -44,7 +39,6 @@ $config = [
                 ],
             ],
         ],
-        
         'formatter' => [
             'dateFormat' => 'dd-MM-Y',
             'booleanFormat' => ['Нет', 'Да']
