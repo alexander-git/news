@@ -11,7 +11,7 @@ $newsUrl = ['main/news', 'id' => $model->id];
             <?= Html::a(Html::encode($model->title), $newsUrl) ?>
         </div>
         <div class="newsListItem__date">
-            <?= $model->date ?>
+            <?= $model->displayDate ?>
         </div>
     </div>
     
@@ -23,7 +23,7 @@ $newsUrl = ['main/news', 'id' => $model->id];
             ) ?>
         <?php endif; ?>
         <div class="newsListItem__description">
-            <?= Html::encode($model->description) ?>&nbsp;
+            <?= nl2br(Html::encode($model->description) ) ?>&nbsp;
             <?= Html::a('читать далее', $newsUrl, ['class' => 'newsListItem__readMore']) ?>
         </div>        
     </div>

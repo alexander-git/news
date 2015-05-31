@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'title',
-            'description',
+            'description:ntext',
             'active:boolean',
         ],
     ]) ?>

@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use app\models\News;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\News */
@@ -28,12 +28,28 @@ $categoriesListSize = min(count($categories), 10);
 
     <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
     
-    <?php /*
+    <?= $model->date ?>
+    <?= $model->time ?>
     <?php if (!$isCreation) : ?>  
-        <?= $form->field($model, 'createdAt')->textInput() ?>
-    <?php endif; ?>
-    */ ?>
+        <?php // При изменении новости можно отредактировать дату ?>
+        
+        <?= $form->field($model, 'date')->widget(\yii\jui\DatePicker::classname(), [
+            'language' => 'ru',
+            "dateFormat" => News::DATE_PICKER_DATE_FORMAT,
+        ]) ?>
     
+        <?= $form->field($model, 'time')->widget(\yii\widgets\MaskedInput::classname(), [
+            'mask' => News::MASKED_INPUT_TIME_FORMAT,
+        ]) ?>
+        <?php 
+            // Отобразим только ошибку.
+            $createdAtField = $form->field($model, 'createdAt');
+            $createdAtField->template = "{error}"
+        ?>
+        <?= $createdAtField ?>
+        
+    <?php endif; ?>
+
     <?php if($isCreation) : ?>
         <?= $form->field($model, 'imageFile')->fileInput() ?>
     <?php else : ?>

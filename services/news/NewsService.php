@@ -24,7 +24,7 @@ class NewsService {
             $this->save($model, $attributes, $idCategories);
             return true;
         }
-        catch(Exception $e) {
+        catch(\Exception $e) {
             return false;
         }   
     }
@@ -37,7 +37,7 @@ class NewsService {
             $this->save($model, $attributes, $idCategories);
             return true;
         }
-        catch(Exception $e) {
+        catch(\Exception $e) {
             return false;
         }
     }
@@ -49,7 +49,7 @@ class NewsService {
             $model->delete();
             $t->commit();
         }
-        catch(Exception $e) {
+        catch(\Exception $e) {
             $t->rollback();
             throw $e;
         }
@@ -69,7 +69,7 @@ class NewsService {
             }
             $t->commit(); 
         } 
-        catch(Exception $e) {
+        catch(\Exception $e) {
             $t->rollback();
             throw $e;
         }    

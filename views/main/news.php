@@ -13,7 +13,7 @@ $this->title = $model->title;
             <?= Html::encode($model->title) ?>
         </div>
         <div class="news__date">
-            <?= $model->date ?>
+            <?= $model->displayDate ?>
         </div>
     </div>
     <div class="news__content -clearfix">
@@ -23,7 +23,7 @@ $this->title = $model->title;
         <?php endif; ?>
         */?>
         <div class="news__text">
-            <?= Html::encode($model->text) ?>
+            <?= nl2br(Html::encode($model->text) ) ?>
         </div>
     </div>
 </div>

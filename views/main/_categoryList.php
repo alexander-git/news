@@ -24,7 +24,7 @@ CategoryListAsset::register($this);
                 <?= Html::encode($c->title) ?>
             </div>
             <div class="categoryListItem__description">
-                <?= Html::encode($c->description) ?>
+                <?= nl2br(Html::encode($c->description) ) ?>
             </div>
         </a>
     <?php endforeach; ?>

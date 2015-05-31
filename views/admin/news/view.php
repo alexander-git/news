@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'formatter' => new NewsFormatter(),
         'attributes' => [
             'title',
-            'description',
+            'description:ntext',
             'active:boolean',
             [
                 'attribute' => 'createdAt',

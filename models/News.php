@@ -26,7 +26,16 @@ use yii\web\UploadedFile;
 
 class News extends \yii\db\ActiveRecord
 {
-    CONST OUTPUT_DATE_FORMAT = 'j-m-Y H:i';
+    // Формат даты, использующийся при отображении новости пользователю.
+    CONST DISPLAY_DATE_FORMAT = 'j-m-Y H:i';
+    
+    // Так как значения из полей ввода используются при создании даты
+    // и последующей установкой значения в поле модели createdAt, то они
+    // должны быть синхронизированны.
+    CONST DATE_FORMAT = 'd-m-Y';
+    CONST TIME_FORMAT = 'H:i:s';
+    CONST DATE_PICKER_DATE_FORMAT = 'dd-MM-yyyy';
+    CONST MASKED_INPUT_TIME_FORMAT = '99:99:99';
     
     public $imageFile = null;
     protected $oldImageFilename = null; // Используется при изменении записи.
@@ -119,6 +128,8 @@ class News extends \yii\db\ActiveRecord
             'imageFile' => 'Файл изображения',
             'imageFilename' => 'Файл изображения',
             'categories' => 'Категории',
+            'date' => 'Дата',
+            'time' => 'Время'
         ];
     }
     
@@ -155,11 +166,32 @@ class News extends \yii\db\ActiveRecord
         return Yii::getAlias('@imagesNewsUrl').'/'.$this->imageFileName;
     }
     
-    public function getDate() {
-        
-        return date(self::OUTPUT_DATE_FORMAT, $this->createdAt);        
+    public function getDisplayDate() {
+        return date(self::DISPLAY_DATE_FORMAT, $this->createdAt);        
     }
     
+    // Методы облегчающие работу с DataPicker и MaskedTextField.
+    ////////////////////////////////////////////////////////////////////////////
+    public function getDate() {
+        return date(self::DATE_FORMAT, $this->createdAt);
+    }
+    
+    public function getTime() {
+        return date(self::TIME_FORMAT, $this->createdAt);
+    }
+    
+    // Для того, чтобы обновить поле createdAt нужно перед сохранением
+    // модели вызвать следующую функцию и передать ей значения даты и 
+    // времени, полученные из DatePicker и MaskedInput.
+    public function setCreatedAtOnDateAndTime($date, $time) {
+        $dateTime = \DateTime::createFromFormat(
+            self::DATE_FORMAT.' '.self::TIME_FORMAT, 
+            $date.' '.$time
+        );
+        $this->createdAt = $dateTime->getTimestamp();
+    }
+    ////////////////////////////////////////////////////////////////////////////
+   
     public function beforeSave($insert) {
         if (!parent::beforeSave($insert)) {
             return false;

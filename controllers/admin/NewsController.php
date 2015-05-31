@@ -78,6 +78,9 @@ class NewsController extends Controller
             $imageFilename = Yii::$app->request->post('imageFilename', '');
             $needDeleteOldImageIfExist = $imageFilename === '';
             $categories = is_array($newsData['categories']) ? $newsData['categories'] : null;
+            // Поле createdAt собираем из значений формы полей 'date' и 'time'.
+            $model->setCreatedAtOnDateAndTime($newsData['date'], $newsData['time']);
+            
             $newsService = new NewsService();
             $success = $newsService->update($model, $newsData, $needDeleteOldImageIfExist, $categories);
             if ($success) {
