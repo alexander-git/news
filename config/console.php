@@ -6,7 +6,10 @@ $params = require(__DIR__ . '/params.php');
 $db = require(__DIR__ . '/db.php');
 
 return [
-    'id' => 'basic-console',
+    'id' => 'news-console',
+    'aliases' => [
+        '@imagesNews' => dirname(__DIR__).'/web/images/news',
+    ],
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'gii'],
     'controllerNamespace' => 'app\commands',
