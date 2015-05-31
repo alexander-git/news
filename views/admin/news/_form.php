@@ -28,8 +28,6 @@ $categoriesListSize = min(count($categories), 10);
 
     <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
     
-    <?= $model->date ?>
-    <?= $model->time ?>
     <?php if (!$isCreation) : ?>  
         <?php // При изменении новости можно отредактировать дату ?>
         

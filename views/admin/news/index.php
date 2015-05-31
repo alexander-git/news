@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\utils\formatters\NewsFormatter;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\NewsSearch */
@@ -25,6 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'summary' => 'Новости с <b>{begin}</b> по <b>{end}</b> из <b>{totalCount}</b>.',
+        'formatter' => new NewsFormatter(),
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'title',
@@ -36,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'createdAt',
-                'format' => ['datetime', 'j-MM-Y H:i:s'],
+                'format' => 'datetime',
                 'filter' => false
             ],
             [

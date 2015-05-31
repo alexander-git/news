@@ -22,7 +22,9 @@ class CategoryController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
+                    'index' => ['get'],
+                    'view' => ['get'],
+                    'delete' => ['post']
                 ],
             ],
         ];
@@ -83,7 +85,7 @@ class CategoryController extends Controller
 
     public function actionDelete($id)
     {
-        $model = findModel($id);
+        $model = $this->findModel($id);
         $categoryService = new CategoryService();
         $categoryService->delete($model);
 

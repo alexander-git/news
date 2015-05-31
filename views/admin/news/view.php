@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Изображение',
                 'attribute' => 'imageUrl',
-                'format' => 'imageUrl'
+                'format' => 'image'
             ],
 
             'text:ntext',

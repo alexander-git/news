@@ -5,6 +5,7 @@ use yii\i18n\Formatter;
 
 class NewsFormatter extends Formatter {
 
+    public $datetimeFormat = 'j-MM-Y H:i:s';
     public $booleanFormat = ['Нет', 'Да'];
     public $nullDisplay = '';
     
@@ -17,14 +18,19 @@ class NewsFormatter extends Formatter {
         foreach ($categories as $c) {
             $result .= $c->title."\n\n";
         }
-        return $this->asParagraphs($result);
+        return parent::asParagraphs($result);
     }
     
-    public function asImageUrl($imageUrl) {
-        if ($imageUrl === '') {
+    public function asImage($value, $options = []) {
+        if ($value === '') {
             return false;
         } else {
-            return $this->asImage($imageUrl, ['style' => 'max-width : 600px']);
+            if (count($options) === 0) {
+                return parent::asImage($value, ['style' => 'max-width : 600px; max-height : 600px;']);  
+            } else {
+                return parent::asImage($value, $options);
+            }
+            
         }
     }
     

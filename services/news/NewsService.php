@@ -4,6 +4,7 @@ namespace app\services\news;
 
 use Yii;
 use app\models\News;
+use app\exceptions\SaveModelException;
 
 class NewsService {
 
@@ -60,7 +61,7 @@ class NewsService {
         try {
             $model->setAttributes($attributes);
             if (!$model->save() ) {
-                throw new \yii\base\Exception(); //TODO#
+                throw new SaveModelException();
             }
             if ($idCategories === null) {
                 $model->deleteCategories();

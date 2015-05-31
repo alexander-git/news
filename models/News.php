@@ -22,6 +22,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use app\models\Category;
 use app\models\CategoryNews;
+use app\exceptions\SaveModelException;
 use yii\web\UploadedFile;
 
 class News extends \yii\db\ActiveRecord
@@ -87,21 +88,10 @@ class News extends \yii\db\ActiveRecord
                 'boolean', 
                 'strict' => true, 
                 'message' => 'Недопустимое значение'
-            ], //TODO#
+            ],
             
             [['createdAt'], 'integer'],
-
-            /*
-            [['hasImage'], 'required'],
-            [
-                ['hasImage'], 
-                'boolean', 
-                'strict' => true, 
-                'message' => 'Недопустимое значение'
-            ], //TODO#
-            */
             
-            //[['imageExtension'], 'required'],
             [
                 ['imageExtension'],
                 'string', 
@@ -183,6 +173,10 @@ class News extends \yii\db\ActiveRecord
     // Для того, чтобы обновить поле createdAt нужно перед сохранением
     // модели вызвать следующую функцию и передать ей значения даты и 
     // времени, полученные из DatePicker и MaskedInput.
+    // Вместо использования этой функции можно  создать
+    // методы setDate и setTime и добовать правила валидации для несуществующих 
+    // полей (date и time). Методы setDate и setTime будут менять значение 
+    // поля createdAt.
     public function setCreatedAtOnDateAndTime($date, $time) {
         $dateTime = \DateTime::createFromFormat(
             self::DATE_FORMAT.' '.self::TIME_FORMAT, 
@@ -271,7 +265,7 @@ class News extends \yii\db\ActiveRecord
            $categoryNews->idNews = $this->id;
            $categoryNews->idCategory =  $idCategory;
            if (!$categoryNews->save() ) {
-               throw new \yii\base\Exception(); //TODO# Заменить.
+               throw new SaveModelException();
            }
         }
     }

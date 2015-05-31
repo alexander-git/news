@@ -24,7 +24,9 @@ class NewsController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
+                    'index' => ['get'],
+                    'view' => ['get'],
+                    'delete' => ['post']
                 ],
             ],
         ];

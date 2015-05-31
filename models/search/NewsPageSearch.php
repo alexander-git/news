@@ -10,7 +10,7 @@ use app\models\Category;
 
 class NewsPageSearch extends Model
 {
-    const NEWS_PER_PAGE = 5;
+    const NEWS_PER_PAGE = 10;
     
     public $category = '';
     
@@ -71,6 +71,10 @@ class NewsPageSearch extends Model
             ]);
         } else {
             // Если нужно отобразить категории к которым отностится новость.
+            // Правда в случае, когда запрашиваются новости для определённой 
+            // категории innerJoinWith() вернёт только эту категорию для 
+            // всех выбранных новостей, даже если какая-либо новости относится
+            // ещё и к другим категориям. 
             //$query->with(['categories']);
         }
          

@@ -19,7 +19,8 @@ class MainController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    
+                    'index' => ['get'],
+                    'news' => ['get'],
                 ],
             ],
         ];

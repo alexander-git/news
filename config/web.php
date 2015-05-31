@@ -21,8 +21,8 @@ $config = [
             'enableCookieValidation' => true
         ],
         'urlManager' => [
-            //'enablePrettyUrl' => true,
-            //'showScriptName' => true,
+            'enablePrettyUrl' => true,
+            'showScriptName' => true,
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

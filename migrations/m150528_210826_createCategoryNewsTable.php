@@ -14,7 +14,7 @@ class m150528_210826_createCategoryNewsTable extends Migration
             'idNews' => Schema::TYPE_INTEGER
         ], $tableOptions);
         
-        $this->addForeignKey('categoryFK', '{{%categoryNews}}', 'idCategory', '{{%category}}', 'id');
+        $this->addForeignKey('categoryFK', '{{%categoryNews}}', 'idCategory', '{{%category}}', 'id', 'RESTRICT');
         $this->addForeignKey('newsFK', '{{%categoryNews}}', 'idNews', '{{%news}}', 'id');
     }
 
