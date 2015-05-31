@@ -80,6 +80,7 @@ class News extends \yii\db\ActiveRecord
                 'tooLong' => 'Описание слишком длинное'
             ],
             
+            [['text'], 'required', 'message' => 'Новость должна содержать текст'],
             [['text'], 'string'],
             
             [['active'], 'required'],
