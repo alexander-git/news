@@ -38,7 +38,7 @@ class ImportController extends Controller
         return $options[$actionId];
     }
     
-    public function actionIndex()
+    public function actionIndex($needDeleteBase = false)
     {
         $json = file_get_contents($this->filename);
         
@@ -47,6 +47,10 @@ class ImportController extends Controller
             $this->importCategory($c, []);
         }
         
+        if ($needDeleteBase) {
+            $this->deleteBase();
+            $this->deleteAllImages();
+        }
         $this->insertCategories();
         $this->insertNews();
         $this->insertCategoryNews();
@@ -80,6 +84,7 @@ class ImportController extends Controller
     
     private function prepareNews($news, $category, $idParentCategories) {
         $date = \DateTime::createFromFormat(self::DATE_FORMAT, $news['date']);
+        $date->setTime(0, 0, 0);
         $createdAt = $date->getTimestamp();
         
         if ($news['image'] !== '') {
@@ -113,6 +118,22 @@ class ImportController extends Controller
                 'filename' => $filename,
                 'url' => $news['image']
             ];
+        }
+    }
+    
+    private function deleteBase() {
+        $db = Yii::$app->db;
+        $db->createCommand()->delete(CategoryNews::tableName() )->execute() ;
+        $db->createCommand()->delete(News::tableName() )->execute() ;
+        $db->createCommand()->delete(Category::tableName() )->execute() ;
+    }
+    
+    private function deleteAllImages() {
+        $files = glob(Yii::getAlias('@imagesNews').'/'.'*');
+        foreach($files as $f) {
+            if (file_exists($f)) {
+                unlink($f);
+            }  
         }
     }
     
