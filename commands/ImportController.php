@@ -66,16 +66,20 @@ class ImportController extends Controller
         
         if ($category['active']) {
             $this->prepareCategory($category);
-            foreach ($category['news'] as $n) {
-                if ($n['active']) {
-                    $this->prepareNews($n, $category, $idParentCategories);
+            if (isset($category['news']) ) {
+                foreach ($category['news'] as $n) {
+                    if ($n['active']) {
+                        $this->prepareNews($n, $category, $idParentCategories);
+                    }
                 }
             }
         }
         $idParentCategories []= $category['id'];
-        foreach ($category['subcategories'] as $c) {
-            $this->importCategory($c, $idParentCategories);
-        }        
+        if (isset($category['subcategories']) ) {
+            foreach ($category['subcategories'] as $c) {
+                $this->importCategory($c, $idParentCategories);
+            }        
+        }
     }
         
     private  function prepareCategory($category) {
